@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@observablehq/framework": "^1.7.0",
+    "d3-dsv": "^3.0.1",
+    "d3-time-format": "^4.1.0"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true,
+  "scripts": {
+    "build": "rimraf dist && observable build",
+    "clean": "rimraf src/.observablehq/cache",
+    "deploy": "observable deploy",
+    "dev": "observable preview",
+    "observable": "observable"
+  },
+  "type": "module"
+}
