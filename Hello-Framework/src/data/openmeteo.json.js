@@ -35,12 +35,6 @@ const response = responses[0];
 
 // Attributes for timezone and location
 const utcOffsetSeconds = response.utcOffsetSeconds();
-/*
-const timezone = response.timezone();
-const timezoneAbbreviation = response.timezoneAbbreviation();
-const latitude = response.latitude();
-const longitude = response.longitude();
-*/
 const hourly = response.hourly();
 
 // Note: The order of weather variables in the URL query and the indices below
@@ -65,12 +59,11 @@ const weatherData = {
 const openmeteo = weatherData;
 const points = openmeteo.hourly.time.map((item, i) => ({
   time: item,
-  temperature: openmeteo.hourly.temperature2m[i]
+  temperature: openmeteo.hourly.temperature2m[i],
+  humidity: openmeteo.hourly.relativeHumidity2m[i],
+  dewpoint: openmeteo.hourly.dewPoint2m[i],
+  isDay: openmeteo.hourly.isDay[i],
+  windspeed: openmeteo.hourly.windSpeed10m[i],
+  windDirection: openmeteo.hourly.windDirection10m[i]
 }));
 process.stdout.write(JSON.stringify(points));
-// `weatherData` now contains a simple structure with arrays for datetime and
-// weather data
-/*for (let i = 0; i < weatherData.hourly.time.length; i++) {
-  console.log(weatherData.hourly.time[i].toISOString(),
-              weatherData.hourly.temperature2m[i]);
-}*/
