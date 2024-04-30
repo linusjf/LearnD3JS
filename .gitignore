@@ -131,3 +131,4 @@ dist
 
 **/commit.txt
 **/1_py3_script
+**/*.out

@@ -1,0 +1,274 @@
+#!/usr/bin/env bash
+#shellcheck disable=SC1091
+source ./require.sh
+source ./errorhandlers.sh
+require date htmlhint sed stylelint prettier tidy find parallel colorguard html-validate js-beautify nproc mdl mdformat eslint shfmt grep shellcheck
+start=$(date +%s)
+info "Starting..."
+declare -i SUCCESS=0
+declare -r configFileName="tidy.config"
+declare -i PROCS=$(($(nproc) - 1))
+
+process_yaml() {
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f -name "*.yaml" -print)
+  if test -n "$files"; then
+    info "Executing prettier for yaml..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser yaml --write %
+    return $?
+  fi
+  return 0
+}
+
+process_json() {
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f -name "*.json" -print)
+  if test -n "$files"; then
+    info "Executing prettier for json..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser json --write %
+    return $?
+  fi
+  return 0
+}
+
+process_stylesheets() {
+  declare -i retcode=0
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f \( -name "*.css" -a ! -name "*.scss.css" -a ! -name "*.sass.css" \) -print)
+  if test -n "$files"; then
+    info "Executing colorguard..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        colorguard --file % --allow-equivalent-notation
+    retcode=$((retcode + $?))
+    info "Executing prettier for css..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser css --write %
+    retcode=$((retcode + $?))
+  fi
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f \( -name "*.css" -a ! -name "*.scss.css" -a ! -name "*.sass.css" -a ! -name "tw-*.css" \) -print)
+  if test -n "$files"; then
+    info "Executing stylelint for css..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        stylelint % --color --fix --quiet-deprecation-warnings
+    retcode=$((retcode + $?))
+  fi
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/dist/**" -o -path "**/build/**" \) -prune \
+    -o -type f -name "*.scss" -print)
+  if test -n "$files"; then
+    info "Executing prettier for scss..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser scss --write %
+    retcode=$((retcode + $?))
+    info "Executing stylelint for scss..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        stylelint % --color --fix --quiet-deprecation-warnings
+    retcode=$((retcode + $?))
+  fi
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f \( -name "*.scss" -a ! -name "_*.scss" \) -print)
+  if test -n "$files"; then
+    info "Executing sass for scss..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I@ \
+        ./runsass @
+    retcode=$((retcode + $?))
+  fi
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f -name "*.sass" -print)
+  if test -n "$files"; then
+    info "Executing sass for sass..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        ./runsass %
+    retcode=$((retcode + $?))
+  fi
+  return "$retcode"
+}
+
+process_html() {
+  declare -i retcode=0
+  files=$(find . \( -path "**/.git/**" -o -path "**/dist/**" -o -path "**/node_modules/**" -o -path "**/build/**" \) -prune \
+    -o -type f -name "*.html" -print)
+  if test -n "$files"; then
+    info "Executing tidy..."
+    info "Warnings and errors written to tidy.out."
+    ./wraptidy -config "$configFileName" -quiet -modify -- **/*.html
+    retcode=$((retcode + $?))
+    sed -i "/^Tidy.*$/d" tidy.out
+    info "Executing prettier for html..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser html --write %
+    retcode=$((retcode + $?))
+    info "Executing htmlhint..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        htmlhint --config .htmlhintrc -f compact % 2> /dev/null
+    retcode=$((retcode + $?))
+    info "Executing html-validate..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        html-validate --formatter stylish %
+    retcode=$((retcode + $?))
+  fi
+  return "$retcode"
+}
+
+process_js() {
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f \( -name "*.js" -o -name "*.mjs" -o -name "*.cjs" \) -print)
+  if test -n "$files"; then
+    info "Executing js-beautify for javascript files..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        js-beautify --type js --quiet -r %
+    return $?
+  fi
+  return 0
+}
+
+process_svg() {
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f -name "*.svg" -print)
+  if test -n "$files"; then
+    info "Executing prettier for svg..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser html --write %
+    return $?
+  fi
+  return 0
+}
+
+process_jsx() {
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f -name "*.jsx" -print)
+  if test -n "$files"; then
+    info "Executing prettier for jsx..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser babel --write %
+    return $?
+  fi
+  return 0
+}
+
+process_tsx() {
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f -name "*.tsx" -print)
+  if test -n "$files"; then
+    info "Executing prettier for tsx files..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser babel-ts --write %
+    return $?
+  fi
+  return 0
+}
+
+process_typescript() {
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/build/**" -o -path "**/dist/**" \) -prune \
+    -o -type f -name "*.ts" -print)
+  if test -n "$files"; then
+    info "Executing prettier for ts files..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        prettier --log-level silent --cache --parser typescript --write %
+    return $?
+  fi
+  return 0
+}
+
+process_markdown() {
+  declare -i retcode=0
+  files=$(find . \( -path "**/.git/**" -o -path "**/node_modules/**" -o -path "**/dist/**" -o -path "**/build/**" \) -prune \
+    -o -type f -name "*.md" -print)
+  if test -n "$files"; then
+    info "Executing mdformat for md..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        mdformat -- %
+    retcode=$((retcode + $?))
+    info "Executing mdl for md..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        mdl -- %
+    retcode=$((retcode + $?))
+  fi
+  return "$retcode"
+}
+
+process_shellscripts() {
+  declare -i retcode=0
+  files="$(shfmt -f . | grep -v "node_modules")"
+  if test -n "$files"; then
+    info "Executing shfmt for shell scripts..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        shfmt -i 2 -bn -ci -sr -w -- %
+    retcode=$((retcode + $?))
+    info "Executing shellcheck for shell scripts..."
+    echo "$files" \
+      | parallel -X --bar -j "$PROCS" -I% \
+        shellcheck --check-sourced --color --shell=bash -- %
+    retcode=$((retcode + $?))
+  fi
+  return "$retcode"
+}
+
+run_eslint() {
+  info "Executing eslint..."
+  eslint --fix --color -- .
+  return $?
+}
+
+process_yaml
+SUCCESS=$((SUCCESS + $?))
+
+process_json
+SUCCESS=$((SUCCESS + $?))
+
+process_stylesheets
+SUCCESS=$((SUCCESS + $?))
+
+process_html
+SUCCESS=$((SUCCESS + $?))
+
+process_js
+SUCCESS=$((SUCCESS + $?))
+
+process_svg
+SUCCESS=$((SUCCESS + $?))
+
+process_jsx
+SUCCESS=$((SUCCESS + $?))
+
+process_tsx
+SUCCESS=$((SUCCESS + $?))
+
+process_typescript
+SUCCESS=$((SUCCESS + $?))
+
+process_markdown
+SUCCESS=$((SUCCESS + $?))
+
+process_shellscripts
+SUCCESS=$((SUCCESS + $?))
+
+run_eslint
+SUCCESS=$((SUCCESS + $?))
+
+end=$(date +%s)
+info "Execution time: $((end - start)) seconds."
+
+exit "$SUCCESS"

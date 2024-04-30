@@ -1,0 +1,14 @@
+{
+  "overrides": [
+    {
+      "files": ".prettierrc.json",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ],
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "useTabs": false
+}

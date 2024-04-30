@@ -1,0 +1,106 @@
+{
+  "elements": [
+    "html5"
+  ],
+  "extends": [
+    "html-validate:recommended"
+  ],
+  "rules": {
+    "attr-pattern": "warn",
+    "attr-spacing": "error",
+    "attribute-allowed-values": "warn",
+    "attribute-boolean-style": [
+      "warn",
+      {
+        "style": "name"
+      }
+    ],
+    "attribute-empty-style": [
+      "warn",
+      {
+        "style": "empty"
+      }
+    ],
+    "class-pattern": "warn",
+    "doctype-html": "error",
+    "doctype-style": [
+      "warn",
+      {
+        "style": "lowercase"
+      }
+    ],
+    "element-permitted-content": "warn",
+    "form-dup-name": [
+      "error",
+      {
+        "allowArrayBrackets": true,
+        "shared": [
+          "radio",
+          "submit",
+          "button",
+          "reset",
+          "checkbox"
+        ]
+      }
+    ],
+    "heading-level": [
+      "warn",
+      {
+        "allowMultipleH1": true
+      }
+    ],
+    "id-pattern": "warn",
+    "input-missing-label": "error",
+    "meta-refresh": "error",
+    "missing-doctype": "error",
+    "no-autoplay": "error",
+    "no-conditional-comment": "error",
+    "no-deprecated-attr": "error",
+    "no-inline-style": "warn",
+    "no-missing-references": "error",
+    "no-redundant-for": "off",
+    "no-redundant-role": "warn",
+    "no-style-tag": "error",
+    "no-trailing-whitespace": "error",
+    "no-unknown-elements": "error",
+    "prefer-button": "warn",
+    "prefer-native-element": [
+      "error",
+      {
+        "mapping": {
+          "article": "article",
+          "banner": "header",
+          "button": "a",
+          "cell": "td",
+          "checkbox": "input",
+          "complementary": "aside",
+          "contentinfo": "footer",
+          "figure": "figure",
+          "form": "form",
+          "heading": "h1,h2,h3,h4,h5,h6",
+          "input": "input",
+          "link": "a",
+          "list": "ul, ol",
+          "listbox": "select",
+          "listitem": "li",
+          "main": "main",
+          "navigation": "nav",
+          "progressbar": "progress",
+          "radio": "input",
+          "region": "section",
+          "table": "table",
+          "textbox": "textarea"
+        }
+      }
+    ],
+    "prefer-tbody": "error",
+    "tel-non-breaking": "warn",
+    "unrecognized-char-ref": "error",
+    "void-style": [
+      "warn",
+      {
+        "style": "selfclosing"
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "author": "",
+  "dependencies": {
+    "@typescript-eslint/typescript-estree": "^7.7.1",
+    "globals": "^15.0.0"
+  },
+  "description": "",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/js": "^9.1.1",
+    "@html-eslint/eslint-plugin": "^0.24.1",
+    "@html-eslint/parser": "^0.24.1",
+    "@types/node": "20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsdoc": "^48.2.3",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-json-files": "^4.1.0",
+    "eslint-plugin-jsonc": "^2.15.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-yml": "^1.14.0",
+    "jsonc-eslint-parser": "^2.4.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^7.7.0",
+    "yaml-eslint-parser": "^1.2.2"
+  },
+  "license": "ISC",
+  "main": "index.js",
+  "name": "learnd3js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}

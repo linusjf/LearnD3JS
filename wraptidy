@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#shellcheck disable=SC1091
+source ./require.sh
+require tidy
+tidy "$@"
+declare -i exitCode=$?
+if test "$exitCode" -eq 1; then
+  exit 0
+fi
+exit "$exitCode"

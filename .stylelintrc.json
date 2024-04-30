@@ -1,0 +1,110 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss"
+  ],
+  "plugins": [
+    "stylelint-csstree-validator",
+    "stylelint-rem-over-px"
+  ],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "comment-no-empty": null,
+    "csstree/validator": {
+      "atrules": false,
+      "ignoreProperties": [
+        "[$][A-Za-z_0-9-]+",
+        "parent-selector{1}",
+        "composes"
+      ],
+      "ignoreValue": "(.*[$].*)|(math.*)|([&])",
+      "properties": {
+        "font-size": "| min(<length-percentage>, <length-percentage>) | max(<length-percentage>, <length-percentage>)",
+        "height": "| min(<length-percentage>, <length-percentage>) | max(<length-percentage>, <length-percentage>) | fill-available",
+        "min-height": "| min(<length-percentage>, <length-percentage>) | max(<length-percentage>, <length-percentage>) | fill-available",
+        "text-wrap": "wrap | nowrap | balance | pretty | stable | inherit | initial | revert | revert-layer | unset",
+        "width": "| min(<length-percentage>, <length-percentage>) | max(<length-percentage>, <length-percentage>) | fill-available"
+      },
+      "syntaxExtensions": [
+        "sass",
+        "less"
+      ]
+    },
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      {
+        "ignoreFontFamilies": [
+          "IconFont"
+        ]
+      }
+    ],
+    "media-feature-range-notation": "prefix",
+    "no-duplicate-selectors": [
+      true,
+      {
+        "disallowInList": false
+      }
+    ],
+    "number-max-precision": 6,
+    "property-no-unknown": [
+      null,
+      {
+        "ignoreProperties": [
+          "parent-selector"
+        ]
+      }
+    ],
+    "rem-over-px/rem-over-px": true,
+    "scss/at-each-key-value-single-line": true,
+    "scss/at-extend-no-missing-placeholder": true,
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "tailwind"
+        ]
+      }
+    ],
+    "scss/block-no-redundant-nesting": true,
+    "scss/comment-no-empty": true,
+    "scss/double-slash-comment-empty-line-before": "never",
+    "scss/double-slash-comment-inline": "never",
+    "scss/load-no-partial-leading-underscore": true,
+    "scss/no-duplicate-dollar-variables": true,
+    "scss/no-duplicate-mixins": true,
+    "scss/no-global-function-names": true,
+    "scss/no-unused-private-members": true,
+    "scss/operator-no-unspaced": true,
+    "scss/property-no-unknown": [
+      true,
+      {
+        "checkPrefixed": true,
+        "ignoreAtRules": [],
+        "ignoreProperties": [
+          "parent-selector",
+          "composes"
+        ],
+        "ignoreSelectors": [],
+        "severity": "error"
+      }
+    ],
+    "scss/selector-nest-combinators": [
+      null,
+      {
+        "severity": "warning"
+      }
+    ],
+    "scss/selector-no-redundant-nesting-selector": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
+    "scss/selector-no-union-class-name": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
+    "selector-class-pattern": null
+  }
+}
