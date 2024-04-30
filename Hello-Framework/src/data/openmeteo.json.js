@@ -1,4 +1,6 @@
-import { fetchWeatherApi } from "openmeteo";
+import {
+  fetchWeatherApi
+} from "openmeteo";
 
 const params = {
   latitude: 19.0728,
@@ -21,8 +23,7 @@ const responses = await fetchWeatherApi(url, params);
 
 // Helper function to form time ranges
 const range = (start, stop, step) =>
-  Array.from(
-    {
+  Array.from({
       length: (stop - start) / step
     },
     (_, i) => start + i * step
