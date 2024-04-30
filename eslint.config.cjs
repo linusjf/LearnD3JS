@@ -1,24 +1,22 @@
 const globals = require("globals");
 const js = require("@eslint/js");
-const jsdoc = require("eslint-plugin-jsdoc");
+// const jsdoc = require("eslint-plugin-jsdoc");
 const typescript = require("typescript-eslint");
 const tsParser = require("@typescript-eslint/parser");
 const html = require("@html-eslint/eslint-plugin");
 const htmlparser = require("@html-eslint/parser");
-const solid = require("eslint-plugin-solid/configs/recommended");
 const yaml = require("eslint-plugin-yml");
 const jsonc = require("eslint-plugin-jsonc");
 
-const config = [
-  {
+const config = [{
     ignores: ["**/dist/**/*", "**/build/**/*"],
     linterOptions: {
       noInlineConfig: false,
-      reportUnusedDisableDirectives: "error",
-    },
+      reportUnusedDisableDirectives: "error"
+    }
   },
   {
-    ignores: ["**/dist/**/*", "**/build/**/*"],
+    ignores: ["**/dist/**/*", "**/build/**/*", "**/.observablehq/**/*"],
     files: [
       "**/*.jsx",
       "**/*.tsx",
@@ -26,73 +24,59 @@ const config = [
       "**/*.js",
       "**/*.mjs",
       "**/*.cjs",
-      "./.*.js",
+      "./.*.js"
     ],
     languageOptions: {
       ecmaVersion: "latest",
       globals: {
         ...globals.browser,
         ...globals.node,
-      },
+        d3: true
+      }
     },
-    ...js.configs.recommended,
-    ...jsdoc.configs["flat/recommended"],
+    ...js.configs.recommended
+    //    ...jsdoc.configs["flat/recommended"]
   },
   {
     name: "ESLint for TypeScript",
     files: ["**/*.ts"],
     plugins: {
-      ts: typescript,
+      ts: typescript
     },
     ...typescript.configs["flat/recommended"],
     languageOptions: {
       ecmaVersion: "latest",
       globals: {
-        ...globals.browser,
+        ...globals.browser
       },
       parserOptions: {
         ecmaVersion: "latest",
-        sourceType: "module",
+        sourceType: "module"
       },
-      parser: tsParser,
+      parser: tsParser
     },
     settings: {
       typescript: {
-        version: "detect",
-      },
-    },
+        version: "detect"
+      }
+    }
   },
   {
     ignores: ["**/dist/**/*", "**/build/**/*"],
     files: ["**/*.html"],
     plugins: {
-      "@html-eslint": html,
+      "@html-eslint": html
     },
     languageOptions: {
-      parser: htmlparser,
+      parser: htmlparser
     },
     rules: {
       ...html.configs["flat/recommended"].rules,
-      "@html-eslint/indent": "error",
-    },
-  },
-  {
-    ignores: ["**/dist/**/*", "**/build/**/*"],
-    files: ["**/*.jsx", "**/*.tsx"],
-    ...solid,
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        project: "tsconfig.json",
-      },
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
+      "@html-eslint/indent": "error"
+    }
   },
   ...yaml.configs["flat/recommended"],
-  ...jsonc.configs["flat/recommended-with-json"],
+  ...jsonc.configs["flat/recommended-with-json"]
 ];
 
 module.exports = config;

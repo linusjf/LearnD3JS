@@ -1,6 +1,15 @@
-import {csvFormat, tsvParse} from "d3-dsv";
-import {utcParse} from "d3-time-format";
+import {
+  csvFormat,
+  tsvParse
+} from "d3-dsv";
+import {
+  utcParse
+} from "d3-time-format";
 
+/**
+ *
+ * @param url
+ */
 async function text(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`fetch failed: ${response.status}`);
@@ -36,11 +45,19 @@ const launchVehicles = tsvParse(await text("https://planet4589.org/space/gcat/ts
 const launchVehicleFamilyMap = new Map(launchVehicles.map((d) => [d["#LV_Name"], d.LV_Family.trim()]));
 
 // Reduce cardinality by mapping smaller states to “Other”.
+/**
+ *
+ * @param d
+ */
 function normalizeState(d) {
   return TOP_STATES_MAP.get(d) ?? "Other";
 }
 
 // Reduce cardinality by mapping smaller launch families to “Other”.
+/**
+ *
+ * @param d
+ */
 function normalizeFamily(d) {
   const family = launchVehicleFamilyMap.get(d);
   return TOP_LAUNCH_VEHICLES.has(family) ? family : "Other";
