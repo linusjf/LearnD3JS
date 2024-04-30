@@ -63,7 +63,11 @@ const weatherData = {
 };
 
 const openmeteo = weatherData;
-process.stdout.write(JSON.stringify(openmeteo));
+const points = openmeteo.hourly.time.map((item, i) => ({
+  time: item,
+  temperature: openmeteo.hourly.temperature2m[i]
+}));
+process.stdout.write(JSON.stringify(points));
 // `weatherData` now contains a simple structure with arrays for datetime and
 // weather data
 /*for (let i = 0; i < weatherData.hourly.time.length; i++) {
