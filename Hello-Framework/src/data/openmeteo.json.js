@@ -1,6 +1,4 @@
-import {
-  fetchWeatherApi
-} from "openmeteo";
+import { fetchWeatherApi } from "openmeteo";
 
 const params = {
   latitude: 19.0728,
@@ -23,7 +21,8 @@ const responses = await fetchWeatherApi(url, params);
 
 // Helper function to form time ranges
 const range = (start, stop, step) =>
-  Array.from({
+  Array.from(
+    {
       length: (stop - start) / step
     },
     (_, i) => start + i * step
@@ -56,6 +55,29 @@ const weatherData = {
   }
 };
 
+function degToCompass(num) {
+  var val = Math.floor(num / 22.5 + 0.5);
+  var arr = [
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW"
+  ];
+  return arr[val % 16];
+}
+
 const openmeteo = weatherData;
 const points = openmeteo.hourly.time.map((item, i) => ({
   time: item,
@@ -64,6 +86,6 @@ const points = openmeteo.hourly.time.map((item, i) => ({
   dewpoint: openmeteo.hourly.dewPoint2m[i],
   isDay: openmeteo.hourly.isDay[i],
   windspeed: openmeteo.hourly.windSpeed10m[i],
-  windDirection: openmeteo.hourly.windDirection10m[i]
+  windDirection: degToCompass(openmeteo.hourly.windDirection10m[i])
 }));
 process.stdout.write(JSON.stringify(points));
