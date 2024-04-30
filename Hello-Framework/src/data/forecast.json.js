@@ -1,5 +1,6 @@
-const longitude = 72.86;
-const latitude = 19.08;
+// Los Angeles
+const longitude = -118.45139;
+const latitude = 34.01583;
 
 /**
  *
@@ -12,7 +13,7 @@ async function json(url) {
 }
 
 const station = await json(
-  `https://api.weather.gov/points/${latitude},${longitude}`,
+  `https://api.weather.gov/points/${latitude},${longitude}`
 );
 const forecast = await json(station.properties.forecastHourly);
 
