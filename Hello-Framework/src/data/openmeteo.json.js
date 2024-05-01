@@ -7,14 +7,15 @@ const params = {
     "temperature_2m",
     "relative_humidity_2m",
     "dew_point_2m",
-    "precipitation_probability",
+    "precipitation",
     "wind_speed_10m",
     "wind_direction_10m",
     "is_day"
   ],
   temperature_unit: "fahrenheit",
   wind_speed_unit: "mph",
-  timezone: "auto"
+  timezone: "auto",
+  models: "best_match"
 };
 const url = "https://api.open-meteo.com/v1/forecast";
 const responses = await fetchWeatherApi(url, params);
@@ -48,7 +49,7 @@ const weatherData = {
     temperature2m: hourly.variables(0).valuesArray(),
     relativeHumidity2m: hourly.variables(1).valuesArray(),
     dewPoint2m: hourly.variables(2).valuesArray(),
-    precipitationProbability: hourly.variables(3).valuesArray(),
+    precipitation: hourly.variables(3).valuesArray(),
     windSpeed10m: hourly.variables(4).valuesArray(),
     windDirection10m: hourly.variables(5).valuesArray(),
     isDay: hourly.variables(6).valuesArray()
@@ -86,6 +87,7 @@ const points = openmeteo.hourly.time.map((item, i) => ({
   dewpoint: openmeteo.hourly.dewPoint2m[i],
   isDay: openmeteo.hourly.isDay[i],
   windspeed: openmeteo.hourly.windSpeed10m[i],
+  precipitation: openmeteo.hourly.precipitation[i],
   windDirection: degToCompass(openmeteo.hourly.windDirection10m[i])
 }));
 process.stdout.write(JSON.stringify(points));
