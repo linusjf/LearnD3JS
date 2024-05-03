@@ -130,3 +130,16 @@ const industry = Generators.input(industryInput);
 <div class="tip">
   <p>This is a <i>styled</i> tip using <small>HTML</small>.</p>
 </div>
+
+<div class="warning" label="⚠️ Danger ⚠️">No lifeguard on duty. Swim at your own risk!</div>
+
+<div class="note" label>This note has no label.</div>
+
+this is **bold** text
+this is **bold** text
+this is _italic_ text
+this is _italic_ text
+this is ~~strikethrough~~ text
+this is `monospaced` text
+
+> this is quoted text
