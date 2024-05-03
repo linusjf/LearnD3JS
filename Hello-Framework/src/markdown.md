@@ -82,3 +82,14 @@ display(weather.slice(-365));
   <h2>When is it warmest based on min_temp?</h2>
   ${Plot.cell(weather.slice(-365), {x: (d) => d.date.getUTCDate(), y: (d) => d.date.getUTCMonth() + 1, fill: "temp_min", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
 </div>
+
+<div class="grid grid-cols-2">
+  <div class="card">
+    <h2>Lorem ipsum</h2>
+    <p>Id ornare arcu odio ut sem nulla pharetra. Aliquet lectus proin nibh nisl condimentum id venenatis a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Aliquet nec ullamcorper sit amet. Sit amet tellus cras adipiscing. Condimentum id venenatis a condimentum vitae. Semper eget duis at tellus. Ut faucibus pulvinar elementum integer enim.</p>
+    <p>Et malesuada fames ac turpis. Integer vitae justo eget magna fermentum iaculis eu non diam. Aliquet risus feugiat in ante metus dictum at. Consectetur purus ut faucibus pulvinar.</p>
+  </div>
+  <div class="card" style="padding: 0;">
+    ${Inputs.table(industries)}
+  </div>
+</div>
