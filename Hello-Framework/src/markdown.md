@@ -118,3 +118,15 @@ const industry = Generators.input(industryInput);
     ]
   }))}
 </div>
+
+<div class="note">This is a note.</div>
+
+<div class="tip">This is a tip.</div>
+
+<div class="warning">This is a warning.</div>
+
+<div class="caution">This is a caution.</div>
+
+<div class="tip">
+  <p>This is a <i>styled</i> tip using <small>HTML</small>.</p>
+</div>
