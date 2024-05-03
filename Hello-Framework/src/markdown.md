@@ -62,3 +62,9 @@ This is **Markdown** inside of _HTML_!
     ${resize((width) => `This card is ${width}px wide.`)}
   </div>
 </div>
+
+<div class="card" style="max-width: 640px;">
+  <h2>It gets hotter during summer</h2>
+  <h3>And months have 28–31 days</h3>
+  ${Plot.cell(weather.slice(-365), {x: (d) => d.date.getUTCDate(), y: (d) => d.date.getUTCMonth() + 1, fill: "temp_max", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
+</div>
