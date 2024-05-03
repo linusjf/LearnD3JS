@@ -64,23 +64,27 @@ This is **Markdown** inside of _HTML_!
 </div>
 
 ```js
-display(weather.slice(-365));
+const data = weather.slice(-365);
+const new_data = data.map((d) => {
+  return { day: d.date.getUTCDate(), month: d.date.getUTCMonth() + 1, ...d };
+});
+display(new_data);
 ```
 
 <div class="card" style="max-width: 640px;">
   <h2>It gets hotter during summer</h2>
   <h3>And months have 28–31 days</h3>
-  ${Plot.cell(weather.slice(-365), {x: (d) => d.date.getUTCDate(), y: (d) => d.date.getUTCMonth() + 1, fill: "temp_max", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
+  ${Plot.cell(new_data, {x: "day", y: "month", fill: "temp_max", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
 </div>
 
 <div class="card" style="max-width: 640px;">
   <h2>When is it windiest?</h2>
-  ${Plot.cell(weather.slice(-365), {x: (d) => d.date.getUTCDate(), y: (d) => d.date.getUTCMonth() + 1, fill: "wind", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
+  ${Plot.cell(new_data, {x: "day", y: "month", fill: "wind", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
 </div>
 
 <div class="card" style="max-width: 640px;">
   <h2>When is it warmest based on min_temp?</h2>
-  ${Plot.cell(weather.slice(-365), {x: (d) => d.date.getUTCDate(), y: (d) => d.date.getUTCMonth() + 1, fill: "temp_min", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
+  ${Plot.cell(new_data, {x: "day", y: "month", fill: "temp_min", tip: true, inset: 0.5}).plot({marginTop: 2, height: 400, padding: 0})}
 </div>
 
 <div class="grid grid-cols-2">
