@@ -97,3 +97,24 @@ display(new_data);
     ${Inputs.table(industries)}
   </div>
 </div>
+
+```js
+const industryInput = Inputs.select(
+  industries.map((d) => d.industry),
+  { unique: true, sort: true, label: "Industry:" }
+);
+const industry = Generators.input(industryInput);
+```
+
+<div class="card" style="display: flex; flex-direction: column; gap: 1rem;">
+  ${industryInput}
+  ${resize((width) => Plot.plot({
+    width,
+    y: {grid: true, label: "Unemployed (thousands)"},
+    marks: [
+     Plot.areaY(industries.filter((d) => d.industry === industry), {x: "date", y: "unemployed", fill: "var(--theme-foreground-muted)", curve: "step"}),
+      Plot.lineY(industries.filter((d) => d.industry === industry), {x: "date", y: "unemployed", curve: "step"}),
+     Plot.ruleY([0])
+    ]
+  }))}
+</div>
