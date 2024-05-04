@@ -173,3 +173,7 @@ this is `monospaced` text
 [external link](https://example.com)
 
 [external link](<https://en.wikipedia.org/wiki/Tar_(computing)>)
+
+![A horse](./horse.jpg)
+
+![A happy kitten](https://placekitten.com/200/300)
