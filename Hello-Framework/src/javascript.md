@@ -125,3 +125,34 @@ display(
   Inputs.button("Click me", { value: 0, reduce: (i) => displayThere(++i) })
 );
 ```
+
+```js
+display(html`1 + 2`);
+// implicit display
+```
+
+```js
+display(1), display(2);
+// no implicit display
+```
+
+${1 + 2}
+
+${display(1), display(2)}
+
+The current width is ${width}.
+
+<div class="grid grid-cols-4">
+  <div class="card">
+    ${resize((width) => `This card is ${width}px wide.`)}
+  </div>
+</div>
+
+<div class="grid grid-cols-2" style="grid-auto-rows: 240px;">
+  <div class="card" style="padding: 0;">
+    ${resize((width, height) => Plot.barY([9, 4, 8, 1, 11, 3, 4, 2, 7, 5]).plot({width, height}))}
+  </div>
+  <div class="card" style="padding: 0;">
+    ${resize((width, height) => Plot.barY([3, 4, 2, 7, 5, 9, 4, 8, 1, 11]).plot({width, height}))}
+  </div>
+</div>
