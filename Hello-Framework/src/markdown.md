@@ -163,8 +163,10 @@ this is `monospaced` text
 1. first
 2. second
 3. third
-   3.1. third first
-   3.2. third second
+   <ol>
+   <li>third first</li>
+   <li>third second</li>
+   </ol>
 
 <https://example.com>
 
