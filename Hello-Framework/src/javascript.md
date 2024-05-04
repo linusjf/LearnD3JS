@@ -82,3 +82,46 @@ display(
   )} ${number}`
 );
 ```
+
+```js
+const x = Math.random();
+
+display(x);
+```
+
+```js
+display({ hello: { subject: "world" }, numbers: [1, 2, 3, 4] });
+```
+
+```js
+for (let i = 0; i < 5; ++i) {
+  display(i);
+}
+```
+
+```js
+display(html`Your lucky number is ${Math.floor(Math.random() * 10)}!`);
+```
+
+```js
+const y = display(Math.random());
+display(y);
+```
+
+The value of `y` is ${y}
+
+```js
+display([1, 2, 3]);
+```
+
+${display(\[1, 2, 3\])}
+
+```js
+const displayThere = display;
+```
+
+```js
+display(
+  Inputs.button("Click me", { value: 0, reduce: (i) => displayThere(++i) })
+);
+```
