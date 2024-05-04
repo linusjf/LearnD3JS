@@ -143,3 +143,33 @@ this is ~~strikethrough~~ text
 this is `monospaced` text
 
 > this is quoted text
+
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| Cell 1-1 | Cell 2-1 | Cell 3-1 |
+| Cell 1-2 | Cell 2-2 | Cell 3-2 |
+
+| Align left | Align center | Align right |
+| :--------- | :----------: | ----------: |
+| Cell 1-1   |   Cell 2-1   |    Cell 3-1 |
+| Cell 1-2   |   Cell 2-2   |    Cell 3-2 |
+
+- red
+- green
+- blue
+  - light blue
+  - dark blue
+
+1. first
+2. second
+3. third
+   3.1. third first
+   3.2. third second
+
+<https://example.com>
+
+[relative link](./dashboard)
+
+[external link](https://example.com)
+
+[external link](<https://en.wikipedia.org/wiki/Tar_(computing)>)
