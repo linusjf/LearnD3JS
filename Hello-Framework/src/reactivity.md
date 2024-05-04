@@ -33,3 +33,21 @@ await new Promise((resolve) => setTimeout(resolve, 10000));
 ```
 
 ${one + two}
+
+```js
+const volcanoes = FileAttachment("volcano.json")
+  .json()
+  .catch(() => ({ width: 87, height: 61, values: [] }));
+```
+
+<input id="nameInput">
+
+```js
+const name = Generators.input(nameInput);
+```
+
+${name}
+
+```js
+display(html`Hello, ${name || "anonymous"}!`);
+```
