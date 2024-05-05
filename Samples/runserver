@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# run http server to view html code in
+# same directory
+require() {
+  hash "$@" || exit
+}
+require http-server
+http-server -c-1 -p 1080 -i -a localhost
