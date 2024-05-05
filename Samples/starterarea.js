@@ -1,6 +1,9 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-const aapl = await d3.csv("/aapl.csv", ({ date, close }) => ({
+const aapl = await d3.csv("/aapl.csv", ({
+  date,
+  close
+}) => ({
   date: new Date(date),
   close: +close
 }));
@@ -51,9 +54,9 @@ function chart(d3, aapl) {
     .attr("transform", `translate(0,${height - marginBottom})`)
     .call(
       d3
-        .axisBottom(x)
-        .ticks(width / 80)
-        .tickSizeOuter(0)
+      .axisBottom(x)
+      .ticks(width / 80)
+      .tickSizeOuter(0)
     );
 
   // Add the y-axis, remove the domain line, add grid lines and a label.
@@ -64,19 +67,19 @@ function chart(d3, aapl) {
     .call((g) => g.select(".domain").remove())
     .call((g) =>
       g
-        .selectAll(".tick line")
-        .clone()
-        .attr("x2", width - marginLeft - marginRight)
-        .attr("stroke-opacity", 0.1)
+      .selectAll(".tick line")
+      .clone()
+      .attr("x2", width - marginLeft - marginRight)
+      .attr("stroke-opacity", 0.1)
     )
     .call((g) =>
       g
-        .append("text")
-        .attr("x", -marginLeft)
-        .attr("y", 10)
-        .attr("fill", "currentColor")
-        .attr("text-anchor", "start")
-        .text("↑ Daily close ($)")
+      .append("text")
+      .attr("x", -marginLeft)
+      .attr("y", 10)
+      .attr("fill", "currentColor")
+      .attr("text-anchor", "start")
+      .text("↑ Daily close ($)")
     );
 
   return svg.node();
