@@ -31,7 +31,8 @@ const config = [{
       globals: {
         ...globals.browser,
         ...globals.node,
-        d3: true
+        d3: true,
+        container: true
       }
     },
     ...js.configs.recommended
