@@ -9,87 +9,133 @@ const aapl = await d3.csv("/aapl.csv", ({
 }));
 console.log(aapl);
 
-function chart(d3, aapl, basis) {
-  // Specify the dimensions of the chart.
-  const width = 928;
-  const height = 600;
-  const marginTop = 20;
-  const marginRight = 30;
-  const marginBottom = 30;
-  const marginLeft = 50;
+const basis = aapl[0].close;
+console.log(basis);
 
-  // Specify the horizontal (time) axis.
-  const x = d3
-    .scaleUtc()
-    .domain(d3.extent(aapl, (d) => d.Date))
-    .range([marginLeft, width - marginRight]);
+function chart(ChangeLineChart, aapl, basis, width) {
+  return ChangeLineChart(aapl, {
+    x: (d) => d.date,
+    y: (d) => d.close,
+    basis, // e.g., 93.24 (omit for the first y-value)
+    yLabel: "↑ Change in price (%)",
+    width,
+    height: 500,
+    color: "steelblue"
+  });
+}
 
-  // Specify the vertical axis.
-  const y = d3
-    .scaleLog()
-    .domain([
-      d3.min(aapl, (d) => (d.Close / basis) * 0.9),
-      d3.max(aapl, (d) => d.Close / basis / 0.9)
-    ])
-    .rangeRound([height - marginBottom, marginTop]);
+function ChangeLineChart(
+  data, {
+    x = ([x]) => x, // given d in data, returns the (temporal) x-value
+    y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
+    basis, // the basis value; defaults to the first y-value
+    defined, // for gaps in data
+    curve = d3.curveLinear, // how to interpolate between points
+    marginTop = 20, // top margin, in pixels
+    marginRight = 30, // right margin, in pixels
+    marginBottom = 30, // bottom margin, in pixels
+    marginLeft = 40, // left margin, in pixels
+    width = 640, // outer width of chart, in pixels
+    height = 400, // outer height of chart, in pixels
+    xType = d3.scaleUtc, // the x-scale type
+    xDomain, // [xmin, xmax]
+    xRange = [marginLeft, width - marginRight], // [left, right]
+    yType = d3.scaleLog, // the y-scale type
+    yDomain, // [ymin, ymax]
+    yRange = [height - marginBottom, marginTop], // [bottom, top]
+    color = "currentColor", // stroke color of line
+    strokeLinecap = "round", // stroke line cap of the line
+    strokeLinejoin = "round", // stroke line join of the line
+    strokeWidth = 1.5, // stroke width of line, in pixels
+    strokeOpacity = 1, // stroke opacity of line
+    yFormat = "+~%", // a format specifier string for the y-axis
+    yLabel // a label for the y-axis
+  } = {}
+) {
+  // Compute values.
+  const X = d3.map(data, x);
+  const Y = d3.map(data, y);
+  const I = d3.range(X.length);
+  if (defined === undefined) defined = (d, i) => !isNaN(X[i]) && !isNaN(Y[i]);
+  const D = d3.map(data, defined);
 
-  // A format function that transforms 1.2 into "+20%", etc.
-  const f = d3.format("+.0%");
-  const format = (x) => (x === 1 ? "0%" : f(x - 1));
+  // Normalize the y-values.
+  if (basis === undefined) basis = Y[0];
+  Y.forEach((y, i) => (Y[i] = y / basis));
 
-  // Create the SVG container.
-  const svg = d3.create("svg").attr("viewBox", [0, 0, width, height]);
+  // Compute default domains.
+  if (xDomain === undefined) xDomain = d3.extent(X);
+  if (yDomain === undefined) yDomain = d3.extent(Y);
 
-  // Create the horizontal (date) axis.
+  // Construct scales and axes.
+  const xScale = xType(xDomain, xRange);
+  const yScale = yType(yDomain, yRange);
+  const xAxis = d3
+    .axisBottom(xScale)
+    .ticks(width / 80)
+    .tickSizeOuter(0);
+  const yAxis = d3.axisLeft(yScale).tickFormat(
+    (
+      (f) => (d) =>
+      f(d - 1)
+    )(d3.format(yFormat))
+  );
+
+  // Construct a line generator.
+  const line = d3
+    .line()
+    .defined((i) => D[i])
+    .curve(curve)
+    .x((i) => xScale(X[i]))
+    .y((i) => yScale(Y[i]));
+
+  const svg = d3
+    .create("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
   svg
     .append("g")
-    .attr("transform", `translate(0,${y(1)})`)
-    .call(
-      d3
-      .axisBottom(x)
-      .ticks(width / 80)
-      .tickSizeOuter(0)
-    )
-    .call((g) => g.select(".domain").remove());
+    .attr("transform", `translate(0,${yScale(1)})`)
+    .call(xAxis);
 
-  // Create the vertical axis, with grid lines.
   svg
     .append("g")
     .attr("transform", `translate(${marginLeft},0)`)
-    .call(
-      d3
-      .axisLeft(y)
-      .tickValues(d3.ticks(...y.domain(), 10))
-      .tickFormat(format)
-    )
+    .call(yAxis)
+    .call((g) => g.select(".domain").remove())
     .call((g) =>
       g
       .selectAll(".tick line")
       .clone()
-      .attr("stroke-opacity", (d) => (d === 1 ? null : 0.2))
       .attr("x2", width - marginLeft - marginRight)
+      .attr("stroke-opacity", 0.1)
     )
-    .call((g) => g.select(".domain").remove());
-
-  // Create a line path that normalizes the value with respect to the base.
-  const line = d3
-    .line()
-    .x((d) => x(d.Date))
-    .y((d) => y(d.Close / basis));
+    .call((g) =>
+      g
+      .append("text")
+      .attr("x", -marginLeft)
+      .attr("y", 10)
+      .attr("fill", "currentColor")
+      .attr("text-anchor", "start")
+      .text(yLabel)
+    );
 
   svg
     .append("path")
-    .datum(aapl)
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 1.5)
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("d", line);
+    .attr("stroke", color)
+    .attr("stroke-width", strokeWidth)
+    .attr("stroke-linecap", strokeLinecap)
+    .attr("stroke-linejoin", strokeLinejoin)
+    .attr("stroke-opacity", strokeOpacity)
+    .attr("d", line(I));
 
   return svg.node();
 }
 
-const node = chart(d3, aapl);
+const node = chart(ChangeLineChart, aapl, basis, 900);
 // Append the SVG element.
 container.append(node);
