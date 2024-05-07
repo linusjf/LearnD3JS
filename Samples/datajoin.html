@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta
+            content="HTML Tidy for HTML5 for Linux version 5.9.14"
+            name="generator"
+        >
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Data Join</title>
+        <link href="./styles.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"></script>
+    </head>
+    <body>
+        <ul id="list">
+            <li></li>
+            <li></li>
+        </ul>
+        <button
+            name="remove"
+            onclick="javascript:remove()"
+            type="button"
+            value="Remove fourth value"
+        >
+            Remove fourth value
+        </button>
+        <script>
+      <![CDATA[
+
+          d3.select("#list")
+            .selectAll("li")
+            .data([10, 20, 30, 25, 15])
+            .join("li")
+            .text((d) => d);
+
+          function remove() {
+            d3.selectAll("li")
+              .data([10, 20, 30, 15])
+              .join("li")
+              .text((d) => d);
+            d3.selectAll("button").style("visibility", "hidden");
+          }
+      ]]>
+    </script>
+    </body>
+</html>
