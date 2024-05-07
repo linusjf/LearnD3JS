@@ -57,3 +57,8 @@ body {
 circle {
   fill: #af90ca;
 }
+
+.svgcontainer {
+  display: flex;
+  flex-direction: column;
+}
