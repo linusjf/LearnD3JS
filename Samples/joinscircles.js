@@ -2,7 +2,7 @@ function getData() {
   let data = [];
   let numItems = Math.ceil(Math.random() * 5);
 
-  for (let i = 0; i < numItems; i++) {
+  for (let index = 0; index < numItems; index++) {
     data.push(Math.random() * 60);
   }
 
@@ -26,11 +26,11 @@ function update(data) {
     });
 }
 
-function updateAll() {
+function updateAllCircles() {
   let myData = getData();
   update(myData);
 }
 
-updateAll();
+updateAllCircles();
 
-d3.select("button").on("click", updateAll);
+d3.select(".circle").on("click", updateAllCircles);
