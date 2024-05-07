@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta
+            content="HTML Tidy for HTML5 for Linux version 5.9.14"
+            name="generator"
+        >
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>SVG Transforms</title>
+        <link href="./styles.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-transform/1.0.4/d3-transform.js"></script>
+    </head>
+    <body>
+        <div class="svgcontainer">
+            <svg height="300" width="300">
+                <rect
+                    fill="green"
+                    height="60"
+                    transform="translate(30 30)"
+                    width="60"
+                    x="20"
+                    y="20"
+                ></rect>
+            </svg>
+            <svg height="300" width="300">
+                <rect
+                    fill="green"
+                    height="60"
+                    transform="translate(60 60) rotate(45)"
+                    width="60"
+                    x="20"
+                    y="20"
+                ></rect>
+            </svg>
+            <svg height="300" width="300">
+                <g transform="translate(60,60) rotate(30)">
+                    <rect fill="green" height="30" width="60" x="20" y="20"></rect>
+                    <circle cx="0" cy="0" fill="red" r="30"></circle>
+                </g>
+            </svg>
+        </div>
+        <script src="/svgtransforms.js"></script>
+    </body>
+</html>

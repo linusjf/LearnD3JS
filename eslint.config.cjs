@@ -32,6 +32,7 @@ const config = [{
         ...globals.browser,
         ...globals.node,
         d3: true,
+        d3Transform: true,
         container: true
       }
     },
