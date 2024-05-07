@@ -30,11 +30,30 @@ body {
 }
 
 .content div {
-  /*  position: absolute; */
   margin: 0.125rem;
   background-color: orange;
   color: white;
   width: 0.875rem;
   height: 0.875rem;
   text-align: center;
+}
+
+.menu div {
+  display: inline-block;
+  padding: 0.3125rem 0.625rem;
+  margin-right: 0.625rem;
+  background-color: #aaa;
+  color: white;
+  border-radius: 0.3125rem;
+  transition: 0.3s background-color;
+  cursor: pointer;
+  user-select: none;
+}
+
+.menu div:hover {
+  background-color: #777;
+}
+
+circle {
+  fill: #af90ca;
 }
