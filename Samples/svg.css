@@ -3,7 +3,24 @@ svg rect {
 }
 
 svg text {
-  fill: yellow;
-  font: 0.75rem sans-serif;
+  fill: black;
+  font: 0.7rem sans-serif;
   text-anchor: end;
+}
+
+.arc text {
+  font:
+    0.6875rem Arial,
+    sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+.title {
+  fill: green;
+  font-weight: bolder;
+  text-anchor: middle;
 }
