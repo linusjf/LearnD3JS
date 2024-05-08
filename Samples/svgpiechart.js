@@ -20,7 +20,7 @@ async function main() {
     "purple"
   ]);
 
-  var pie = d3.pie().value((d) => d.percent);
+  var pie = d3.pie().value((d) => d.Percent);
 
   var path = d3
     .arc()
@@ -41,20 +41,18 @@ async function main() {
   arc
     .append("path")
     .attr("d", path)
-    .attr("fill", (d) => color(d.data.states));
-
-  console.log(arc);
+    .attr("fill", (d) => color(d.data.State));
 
   arc
     .append("text")
     .attr("transform", (d) => "translate(" + label.centroid(d) + ")")
-    .text((d) => d.data.states);
+    .text((d) => d.data.State);
 
   svg
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + 10 + ")")
     .append("text")
-    .text("Top population states in India")
+    .text("Top Population States in India")
     .attr("class", "title");
 }
 
