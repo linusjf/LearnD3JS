@@ -1,6 +1,8 @@
 async function main() {
   const data = await d3.csv("/population.csv");
+
   console.log(data);
+
   var svg = d3.select("svg"),
     width = svg.attr("width"),
     height = svg.attr("height"),
@@ -10,16 +12,7 @@ async function main() {
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-  var color = d3.scaleOrdinal([
-    "gray",
-    "green",
-    "brown",
-    "orange",
-    "yellow",
-    "red",
-    "purple"
-  ]);
-
+  const color = d3.scaleOrdinal(d3.schemeAccent.slice(0, 7));
   var pie = d3.pie().value((d) => d.Percent);
 
   var path = d3
@@ -32,22 +25,24 @@ async function main() {
     .outerRadius(radius)
     .innerRadius(radius - 80);
 
-  var arc = g
+  var piedata = pie(data);
+
+  console.log(piedata);
+
+  var arcs = g
     .selectAll(".arc")
-    .data(pie(data))
+    .data(piedata)
     .enter()
     .append("g")
     .attr("class", "arc");
-  arc
+  arcs
     .append("path")
     .attr("d", path)
     .attr("fill", (d) => color(d.data.State));
-
-  arc
+  arcs
     .append("text")
     .attr("transform", (d) => "translate(" + label.centroid(d) + ")")
     .text((d) => d.data.State);
-
   svg
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + 10 + ")")
