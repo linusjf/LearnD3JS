@@ -24,3 +24,9 @@ svg text {
   font-weight: bolder;
   text-anchor: middle;
 }
+
+.line {
+  fill: none;
+  stroke: green;
+  stroke-width: 5px;
+}
