@@ -30,3 +30,8 @@ svg text {
   stroke: green;
   stroke-width: 0.3125rem;
 }
+
+.grid-lines line {
+  stroke: gray;
+  stroke-opacity: 0.2;
+}

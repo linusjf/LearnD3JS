@@ -55,7 +55,33 @@ async function main() {
   svg
     .append("g")
     .attr("transform", "translate(" + width + ",0)")
-    .call(d3.axisRight(y));
+    .call(d3.axisRight(y).tickPadding(15));
+
+  const yGrid = (g) =>
+    g
+    .attr("class", "grid-lines")
+    .selectAll("line")
+    .data(y.ticks())
+    .join("line")
+    .attr("x1", 0)
+    .attr("x2", width)
+    .attr("y1", (d) => y(d))
+    .attr("y2", (d) => y(d));
+
+  svg.append("g").call(yGrid);
+
+  const xGrid = (g) =>
+    g
+    .attr("class", "grid-lines")
+    .selectAll("line")
+    .data(x.ticks())
+    .join("line")
+    .attr("x1", (d) => x(d))
+    .attr("x2", (d) => x(d))
+    .attr("y1", 0)
+    .attr("y2", height);
+
+  svg.append("g").call(xGrid);
 }
 
 (async () => await main())();
