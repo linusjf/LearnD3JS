@@ -1,0 +1,9 @@
+path {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-width: 0.03125rem;
+}
+
+path:hover {
+  fill: red;
+}
