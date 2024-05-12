@@ -1,0 +1,15 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 0.875rem;
+  color: #333;
+  width: 56.25rem;
+}
+
+canvas {
+  border: 1px solid #eee;
+  margin: 0.3125rem;
+}
+
+.description {
+  margin: 0.625rem 0;
+}
