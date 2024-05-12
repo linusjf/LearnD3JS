@@ -7,19 +7,21 @@
         >
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>SVG Geo</title>
+        <title>Geo</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
         <link
             href="http://fonts.googleapis.com/css?family=Montserrat"
             rel="stylesheet"
             type="text/css"
         >
-        <link href="./svggeo.css" rel="stylesheet">
+        <link href="./geo.css" rel="stylesheet">
     </head>
     <body>
         <div id="content">
-            <canvas height="600" width="800"></canvas>
+            <svg height="400" width="800">
+                <g class="map"></g>
+            </svg>
         </div>
-        <script src="/svggeo.js"></script>
+        <script src="/geo.js"></script>
     </body>
 </html>
