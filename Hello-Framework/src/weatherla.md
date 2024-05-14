@@ -1,7 +1,6 @@
----
-theme: dashboard
-toc: false
----
+______________________________________________________________________
+
+## theme: dashboard toc: false
 
 # Weather report (Los Angeles)
 

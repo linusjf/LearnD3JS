@@ -1,8 +1,6 @@
----
-theme: dashboard
-title: Example dashboard
-toc: false
----
+______________________________________________________________________
+
+## theme: dashboard title: Example dashboard toc: false
 
 # Rocket launches 🚀
 

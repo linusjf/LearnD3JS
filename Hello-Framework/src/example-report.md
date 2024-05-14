@@ -1,6 +1,6 @@
----
-title: Example report
----
+______________________________________________________________________
+
+## title: Example report
 
 # A brief history of space exploration
 

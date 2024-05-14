@@ -1,7 +1,6 @@
----
-title: My favorite page
-toc: false
----
+______________________________________________________________________
+
+## title: My favorite page toc: false
 
 # Markdown
 
